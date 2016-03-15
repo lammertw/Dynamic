@@ -1,0 +1,16 @@
+PODS:
+  - Dynamic (0.1.0)
+
+DEPENDENCIES:
+  - Dynamic (from `../`)
+
+EXTERNAL SOURCES:
+  Dynamic:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Dynamic: 3a3d74f38c897b0bae0bda7a3e489ad070269613
+
+PODFILE CHECKSUM: b2c2b813adb3abbc6f09c052b2e4e838bff5ec5c
+
+COCOAPODS: 1.0.0.beta.4
