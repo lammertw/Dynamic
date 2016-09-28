@@ -39,7 +39,7 @@ class ViewController: UIViewController {
     }
 
     // MARK: IBAction methods
-    @IBAction func textfieldValueChanged(sender: UITextField) {
+    @IBAction func textfieldValueChanged(_ sender: UITextField) {
         
         guard let resultText = resultTextField.text else { return }
         

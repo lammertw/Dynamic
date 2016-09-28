@@ -9,36 +9,36 @@
 import Foundation
 
 public enum ListenerType {
-    case UI
-    case Model
+    case ui
+    case model
 }
 
-public class ReactiveDynamic<T> {
-    public typealias Listener = (T, exclude: ListenerType?) -> Void
-    private var listeners: [(listener: Listener, type: ListenerType?)] = []
+open class ReactiveDynamic<T> {
+    public typealias Listener = (T, _ exclude: ListenerType?) -> Void
+    fileprivate var listeners: [(listener: Listener, type: ListenerType?)] = []
 
-    public func bind(listener: Listener) {
+    open func bind(_ listener: @escaping Listener) {
         bind(nil, listener: listener)
     }
 
-    public func bind(type: ListenerType?, listener: Listener) {
+    open func bind(_ type: ListenerType?, listener: @escaping Listener) {
         listeners.append((listener: listener, type: type))
     }
 
-    public func bindAndFire(listener: Listener) {
+    open func bindAndFire(_ listener: @escaping Listener) {
         bind(listener)
-        listener(value, exclude: nil)
+        listener(value, nil)
     }
 
-    private func fire(exclude: ListenerType?) {
+    fileprivate func fire(_ exclude: ListenerType?) {
         for listener in listeners.filter({ listener in exclude == nil || listener.type != exclude}) {
-            listener.listener(innerValue, exclude: exclude)
+            listener.listener(innerValue, exclude)
         }
     }
 
-    private var innerValue: T
+    fileprivate var innerValue: T
 
-    public var value: T {
+    open var value: T {
         set {
             innerValue = newValue
             fire(nil)
@@ -48,7 +48,7 @@ public class ReactiveDynamic<T> {
         }
     }
 
-    public func update(value: T, exclude: ListenerType?) {
+    open func update(_ value: T, exclude: ListenerType?) {
         innerValue = value
         fire(exclude)
     }
@@ -61,14 +61,14 @@ public class ReactiveDynamic<T> {
     }
 }
 
-public class ReadableDynamic<T> {
+open class ReadableDynamic<T> {
 
-    public typealias Listener = T -> Void
-    private var listeners = [(AnyObject?, Listener)]()
+    public typealias Listener = (T) -> Void
+    fileprivate var listeners = [(AnyObject?, Listener)]()
 
-    private var _value: T
+    fileprivate var _value: T
 
-    public var value: T {
+    open var value: T {
         return _value
     }
 
@@ -79,7 +79,7 @@ public class ReadableDynamic<T> {
         }
     }
 
-    public func bind(object: AnyObject? = nil, reset: Bool = false, listener: Listener) {
+    open func bind(_ object: AnyObject? = nil, reset: Bool = false, listener: @escaping Listener) {
         if reset {
             listeners.removeAll()
         } else if let object = object {
@@ -88,32 +88,32 @@ public class ReadableDynamic<T> {
         listeners.append((object, listener))
     }
 
-    public func bindAndFire(object: AnyObject? = nil, reset: Bool = false, listener: Listener) {
+    open func bindAndFire(_ object: AnyObject? = nil, reset: Bool = false, listener: @escaping Listener) {
         bind(object, reset: reset, listener: listener)
     }
 
-    public func remove(object: AnyObject) {
-        if let index = listeners.indexOf({$0.0 === object}) {
-            listeners.removeAtIndex(index)
+    open func remove(_ object: AnyObject) {
+        if let index = listeners.index(where: {$0.0 === object}) {
+            listeners.remove(at: index)
         }
     }
 
 }
 
-public class Dynamic<T>: ReadableDynamic<T> {
+open class Dynamic<T>: ReadableDynamic<T> {
 
-    public override func bindAndFire(object: AnyObject? = nil, reset: Bool = false, listener: Listener) {
+    open override func bindAndFire(_ object: AnyObject? = nil, reset: Bool = false, listener: @escaping Listener) {
         super.bindAndFire(object, reset: reset, listener: listener)
         listener(value)
     }
 
-    private func fire() {
+    fileprivate func fire() {
         for listener in listeners {
             listener.1(value)
         }
     }
 
-    public override var value: T {
+    open override var value: T {
         get {
             return _value
         }
@@ -123,7 +123,7 @@ public class Dynamic<T>: ReadableDynamic<T> {
         }
     }
 
-    public var silentValue: T {
+    open var silentValue: T {
         get {
             return _value
         }
@@ -136,15 +136,15 @@ public class Dynamic<T>: ReadableDynamic<T> {
         super.init(v, listener: listener)
     }
 
-    public func reset() {
+    open func reset() {
         listeners = []
     }
 
-    public func update(value: T) {
+    open func update(_ value: T) {
         self.value = value
     }
 
-    public func cleanCopy() -> Dynamic<T> {
+    open func cleanCopy() -> Dynamic<T> {
         let copy = Dynamic(value)
         bind { [weak copy] in
             copy?.value = $0
@@ -152,7 +152,7 @@ public class Dynamic<T>: ReadableDynamic<T> {
         return copy
     }
 
-    public func toOptional() -> Dynamic<T?> {
+    open func toOptional() -> Dynamic<T?> {
         let copy = Dynamic<T?>(value)
         bind {
             copy.value = $0
