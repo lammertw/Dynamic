@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Dynamic"
-  s.version          = "0.2.0"
+  s.version          = "0.3.0"
   s.summary          = "Dynamic is a lightweight reactive binding object."
   s.homepage         = "https://github.com/lammertw/Dynamic"
   s.license          = 'MIT'
