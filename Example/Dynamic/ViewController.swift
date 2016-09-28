@@ -7,18 +7,45 @@
 //
 
 import UIKit
+import Dynamic
 
 class ViewController: UIViewController {
 
+    // MARK: IBOutlets
+    @IBOutlet weak var resultTextField: UITextField!
+    @IBOutlet weak var resultLabel: UILabel!
+    
+    // MARK: Properties
+    let resultString = Dynamic("")
+    
+    // MARK: Life-cycle methods
     override func viewDidLoad() {
+    
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
+        
+        // Listen for changes of the result string, if so update the UILabel
+        resultString.bindAndFire { [unowned self] in
+        
+            self.resultLabel.text = $0
+        
+        }
+        
     }
 
     override func didReceiveMemoryWarning() {
+        
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        
     }
 
+    // MARK: IBAction methods
+    @IBAction func textfieldValueChanged(sender: UITextField) {
+        
+        guard let resultText = resultTextField.text else { return }
+        
+        resultString.value = resultText
+        
+    }
+    
 }
 
