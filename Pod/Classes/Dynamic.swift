@@ -93,7 +93,7 @@ open class ReadableDynamic<T> {
     }
 
     open func remove(_ object: AnyObject) {
-        if let index = listeners.index(where: {$0.0 === object}) {
+        if let index = listeners.firstIndex(where: {$0.0 === object}) {
             listeners.remove(at: index)
         }
     }
