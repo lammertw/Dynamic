@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "Dynamic"
-  s.version          = "0.3.0"
+  s.version          = "0.4.0"
   s.summary          = "Dynamic is a lightweight reactive binding object."
   s.homepage         = "https://github.com/lammertw/Dynamic"
   s.license          = 'MIT'
@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/lammertw/Dynamic.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/lwesterhoff'
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
   s.watchos.deployment_target = '2.0'
   s.osx.deployment_target = '10.10'
   s.tvos.deployment_target = '9.0'
@@ -26,3 +26,4 @@ Pod::Spec.new do |s|
   s.source_files = 'Pod/Classes/**/*'
 
 end
+
